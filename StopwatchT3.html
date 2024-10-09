@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css">
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+</head>
+<body>
+    <h1>Stopwatch</h1>
+    <div id="stopwatch">00:00:00</div>
+    <div id="matriculation-numbers">
+        <h3>Matriculation Numbers:</h3>
+        <ul>
+            <li>BIM/22/2059</li>
+            <li>BIM/22/2083</li>
+            <li>BIM/22/2091</li>
+            <li>BIM/22/2049</li>
+            <li>BIM/22/2052</li>
+        </ul>
+    </div>
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+    <button id="reset">Reset</button>
+
+    <py-script>
+        from time import sleep
+        import js
+
+        running = False
+        time_seconds = 0
+
+        def update_display():
+            hours = time_seconds // 3600
+            minutes = (time_seconds % 3600) // 60
+            seconds = time_seconds % 60
+            display = f"{hours:02}:{minutes:02}:{seconds:02}"
+            js.document.getElementById('stopwatch').innerText = display
+
+        def start_timer(event=None):
+            global running
+            running = True
+            while running:
+                sleep(1)
+                global time_seconds
+                time_seconds += 1
+                update_display()
+
+        def stop_timer(event=None):
+            global running
+            running = False
+
+        def reset_timer(event=None):
+            global time_seconds
+            time_seconds = 0
+            update_display()
+
+        js.document.getElementById('start').addEventListener('click', start_timer)
+        js.document.getElementById('stop').addEventListener('click', stop_timer)
+        js.document.getElementById('reset').addEventListener('click', reset_timer)
+    </py-script>
+</body>
+</html>
